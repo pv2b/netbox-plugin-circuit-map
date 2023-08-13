@@ -40,14 +40,14 @@ def configure_leaflet_map(map_id: str, sites: dict[Site, LatLon], circuits: list
     for circuit in circuits or []:
         a = circuit.termination_a
         z = circuit.termination_z
-        if not a or not a.site or a.site.id not in site_id_to_latlon: continue
-        if not z or not z.site or z.site.id not in site_id_to_latlon: continue
-        c.append({
-            "site_a": a.site.id,
-            "site_z": z.site.id,
-            "provider": circuit.provider.name,
-            "cid": circuit.cid,
-            "id": circuit.id
-        })
+        if a and a.site and a.site.id in site_id_to_latlon and \
+           z and z.site and z.site.id in site_id_to_latlon:
+            c.append({
+                "site_a": a.site.id,
+                "site_z": z.site.id,
+                "provider": circuit.provider.name,
+                "cid": circuit.cid,
+                "id": circuit.id
+            })
 
     return map_config
