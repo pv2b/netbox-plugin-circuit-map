@@ -53,6 +53,8 @@ Object.values(map_data.sites).forEach(function(entry) {
   }
 })
 
+let lines_by_site = {}
+
 for (let key in markers) {
   const marker_parent_layer = markers[key].length > 1 ? L.markerClusterGroup() : geomap;
   for (let marker_data of markers[key]) {
@@ -67,10 +69,17 @@ for (let key in markers) {
     markerObj.on('click', function (event) {
       let site = event.target.options.site
       if (sidebar.isVisible() && (sidebar.displayed_site === site.id)) {
-        sidebar.displayed_site = undefined
         sidebar.hide()
       } else {
+        if (sidebar.displayed_site) {
+          for (let line of lines_by_site[sidebar.displayed_site]) {
+            line.setStyle(normalLineStyle)
+          }
+        }
         sidebar.displayed_site = site.id
+        for (let line of lines_by_site[sidebar.displayed_site]) {
+          line.setStyle(focusLineStyle)
+        }
         document.querySelector('.sidebar-site-name').innerHTML = `<a href="${site.url}" target="_blank">${site.name}</a>`
         document.querySelector('.sidebar-site-tenant').innerText = site.tenant
         document.querySelector('.sidebar-site-address').innerText = site.address
@@ -86,15 +95,42 @@ for (let key in markers) {
 }
 
 const normalLineStyle = {weight: 3, color: '#3388ff'}
-const boldLineStyle ={weight: 5, color:'#0c10ff'};
+const boldLineStyle = {weight: 5, color:'#0c10ff'};
+const focusLineStyle = {weight: 3, color:'#ff8833'};
+const boldFocusLineStyle = {weight: 5, color:'#ff100c'};
+
+Object.keys(map_data.sites).forEach(function(id) {
+  lines_by_site[id] = []
+})
 
 for (let circuit of map_data.circuits) {
-  pos_a = map_data.sites[circuit.site_a].position
-  pos_z = map_data.sites[circuit.site_z].position
+  let site_a = circuit.site_a
+  let site_z = circuit.site_z
+  let pos_a = map_data.sites[site_a].position
+  let pos_z = map_data.sites[site_z].position
   let line = L.polyline([pos_a, pos_z], normalLineStyle).addTo(geomap)
-  line.on('mouseover', function () {this.setStyle(boldLineStyle); this.bringToFront()})
-  line.on('mouseout', function () {this.setStyle(normalLineStyle)})
+  line.on('mouseover', () => {
+    const a = site_a;
+    const z = site_z;
+    if (sidebar.displayed_site == a || sidebar.displayed_site == z) {
+      line.setStyle(boldFocusLineStyle);
+    } else {
+      line.setStyle(boldLineStyle);
+    }
+    line.bringToFront();
+  })
+  line.on('mouseout', () => {
+    const a = site_a;
+    const z = site_z;
+    if (sidebar.displayed_site == a || sidebar.displayed_site == z) {
+      line.setStyle(focusLineStyle);
+    } else {
+      line.setStyle(normalLineStyle);
+    }
+  })
   line.bindTooltip(`${circuit.id}<br><span class="text-muted">${circuit.provider}</span>`, {sticky:true})
+  lines_by_site[site_a].push(line)
+  lines_by_site[site_z].push(line)
 }
 
 if (bounds.isValid()) {
@@ -102,3 +138,10 @@ if (bounds.isValid()) {
 } else {
   geomap.fitWorld()
 }
+
+sidebar.on('hide', function () {
+  for (let line of lines_by_site[sidebar.displayed_site]) {
+    line.setStyle(normalLineStyle)
+  }
+  sidebar.displayed_site = undefined
+});
