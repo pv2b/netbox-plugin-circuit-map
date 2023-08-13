@@ -5,19 +5,19 @@
 
 {% block head %}
     {# Leaflet #}
-    <link rel="stylesheet" href="{% static 'netbox_device_map/leaflet/leaflet.css' %}">
-    <script src="{% static 'netbox_device_map/leaflet/leaflet.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'netbox_circuit_map/leaflet/leaflet.css' %}">
+    <script src="{% static 'netbox_circuit_map/leaflet/leaflet.js' %}"></script>
     {# Leaflet plugins #}
-    <link rel="stylesheet" href="{% static 'netbox_device_map/leaflet.fullscreen/Control.FullScreen.css' %}">
-    <script src="{% static 'netbox_device_map/leaflet.fullscreen/Control.FullScreen.js' %}"></script>
-    <script src="{% static 'netbox_device_map/js/svg-icon.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'netbox_device_map/leaflet-sidebar/L.Control.Sidebar.css' %}">
-    <script src="{% static 'netbox_device_map/leaflet-sidebar/L.Control.Sidebar.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'netbox_device_map/leaflet.markercluster/MarkerCluster.css' %}">
-    <link rel="stylesheet" href="{% static 'netbox_device_map/leaflet.markercluster/MarkerCluster.Default.css' %}">
-    <script src="{% static 'netbox_device_map/leaflet.markercluster/leaflet.markercluster.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'netbox_circuit_map/leaflet.fullscreen/Control.FullScreen.css' %}">
+    <script src="{% static 'netbox_circuit_map/leaflet.fullscreen/Control.FullScreen.js' %}"></script>
+    <script src="{% static 'netbox_circuit_map/js/svg-icon.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'netbox_circuit_map/leaflet-sidebar/L.Control.Sidebar.css' %}">
+    <script src="{% static 'netbox_circuit_map/leaflet-sidebar/L.Control.Sidebar.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'netbox_circuit_map/leaflet.markercluster/MarkerCluster.css' %}">
+    <link rel="stylesheet" href="{% static 'netbox_circuit_map/leaflet.markercluster/MarkerCluster.Default.css' %}">
+    <script src="{% static 'netbox_circuit_map/leaflet.markercluster/leaflet.markercluster.js' %}"></script>
 
-    <link rel="stylesheet" href="{% static 'netbox_device_map/style.css' %}">
+    <link rel="stylesheet" href="{% static 'netbox_circuit_map/style.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -76,7 +76,7 @@
                     <div class="sidebar-circuit-list"></div>
                 </div>
                 {{ map_data|json_script:"map-data" }}
-                <script src="{% static 'netbox_device_map/js/map.js' %}"></script>
+                <script src="{% static 'netbox_circuit_map/js/map.js' %}"></script>
             {% else %}
                 Please specify filtering criteria for displaying the map
             {% endif %}
