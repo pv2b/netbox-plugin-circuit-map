@@ -44,7 +44,7 @@ let bounds = new L.LatLngBounds()
 
 // Preparing to place markers with the same coordinates in clusters
 let markers = {}
-map_data.markers.forEach(function(entry) {
+Object.values(map_data.sites).forEach(function(entry) {
   let key = entry.position.toString()
   if (key in markers) {
     markers[key].push(entry)
@@ -89,7 +89,9 @@ const normalLineStyle = {weight: 3, color: '#3388ff'}
 const boldLineStyle ={weight: 5, color:'#0c10ff'};
 
 for (let circuit of map_data.circuits) {
-  let line = L.polyline(circuit.coords, normalLineStyle).addTo(geomap)
+  pos_a = map_data.sites[circuit.site_a].position
+  pos_z = map_data.sites[circuit.site_z].position
+  let line = L.polyline([pos_a, pos_z], normalLineStyle).addTo(geomap)
   line.on('mouseover', function () {this.setStyle(boldLineStyle); this.bringToFront()})
   line.on('mouseout', function () {this.setStyle(normalLineStyle)})
   line.bindTooltip(`${circuit.id}<br><span class="text-muted">${circuit.provider}</span>`, {sticky:true})
