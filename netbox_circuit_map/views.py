@@ -25,7 +25,6 @@ class MapView(PermissionRequiredMixin, View):
     def get(self, request):
         """Circuit map view"""
         form = self.form(request.GET)
-        print(repr(request.GET))
         if form.is_valid():
             if sitename := form.cleaned_data['site']:
                 site = Site.objects.get(name=sitename)
