@@ -92,7 +92,7 @@ for (let circuit of map_data.circuits) {
   let line = L.polyline(circuit.coords, normalLineStyle).addTo(geomap)
   line.on('mouseover', function () {this.setStyle(boldLineStyle); this.bringToFront()})
   line.on('mouseout', function () {this.setStyle(normalLineStyle)})
-  line.bindTooltip(`${circuit.id}<br><span class="text-muted">${circuit.provider}</span>`)
+  line.bindTooltip(`${circuit.id}<br><span class="text-muted">${circuit.provider}</span>`, {sticky:true})
 }
 
 if (bounds.isValid()) {
