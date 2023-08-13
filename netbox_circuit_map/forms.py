@@ -12,7 +12,7 @@ class CircuitMapFilterForm(forms.Form):
         queryset=Site.objects.all(),
         required=False,
         label="Site",
-        help_text="Site for circuit selection"
+        help_text="Show only circuits to/from this site"
     )
     hide_circuits = forms.BooleanField(
         required=False,
