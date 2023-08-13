@@ -63,7 +63,7 @@ for (let key in markers) {
       iconOptions = default_marker_icon
     }
     let markerObj = L.marker(marker_data.position, {icon: L.divIcon.svgIcon(iconOptions), site: marker_data.site})
-      .bindTooltip(`${marker_data.site.name}<br><span class="text-muted">${marker_data.site.role}</span>`)
+      .bindTooltip(`${marker_data.site.name}<br><span class="text-muted">${marker_data.site.tenant}</span>`)
     markerObj.on('click', function (event) {
       let site = event.target.options.site
       if (sidebar.isVisible() && (sidebar.displayed_site === site.id)) {
@@ -72,8 +72,8 @@ for (let key in markers) {
       } else {
         sidebar.displayed_site = site.id
         document.querySelector('.sidebar-site-name').innerHTML = `<a href="${site.url}" target="_blank">${site.name}</a>`
-        document.querySelector('.sidebar-site-tenant').innerHTML = site.tenant
-        document.querySelector('.sidebar-site-address').innerHTML = site.address
+        document.querySelector('.sidebar-site-tenant').innerText = site.tenant
+        document.querySelector('.sidebar-site-address').innerText = site.address
         sidebar.show()
         fetch(`connected-circuit/${site.id}`)
           .then(response => response.json()).then(
