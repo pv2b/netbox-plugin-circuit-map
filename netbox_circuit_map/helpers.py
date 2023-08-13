@@ -1,9 +1,11 @@
 from packaging import version
 
-from dcim.models import Device
+from dcim.models import Site
+from circuits.models import Circuit, CircuitTermination
 from django.db.models import QuerySet, Q
 from ipam.models import VLAN
 from netbox.settings import VERSION
+from itertools import chain
 
 from .settings import plugin_settings
 
@@ -13,32 +15,21 @@ NETBOX_VERSION = version.parse(VERSION)
 LatLon = tuple[float, float]
 
 
-def get_device_location(device: Device) -> LatLon | None:
-    """Extract device geolocation from special custom field"""
-    if location_cf := device.custom_field_data.get(LOCATION_CF_NAME):
-        return tuple(map(float, location_cf.replace(' ', '').split(',', maxsplit=1)))
+def get_site_location(site: Site) -> LatLon | None:
+    return (float(site.latitude), float(site.longitude))
+
+def get_connected_circuits(site: Site) -> QuerySet[Circuit]:
+    return Circuit.objects.filter(Q(termination_a__site_id=site.id) | Q(termination_a__site_id=site.id))
 
 
-def get_connected_devices(device: Device, vlan: VLAN = None) -> QuerySet[Device]:
-    """Get list of connected devices to the specified device.
-    If the vlan is specified, return only devices connected to the interfaces of the specified device
-    containing the specified VLAN"""
-    included_interfaces = device.interfaces.all()
-    if vlan is not None:
-        included_interfaces = included_interfaces.filter(Q(untagged_vlan=vlan) | Q(tagged_vlans=vlan))
-    if NETBOX_VERSION < version.parse('3.3.0'):
-        return Device.objects.filter(interfaces___link_peer_id__in=included_interfaces)
-    else:
-        return Device.objects.filter(
-            interfaces__cable__terminations__interface__in=device.interfaces.all()
-        ).exclude(pk=device.id)
+def get_connected_sites(site: Site) -> QuerySet[Site]:
+    """Get list of connected sites to the specified site (through circuits)"""
+    
+    # First get all circuits where we are the A or Z termination
+    circuits = get_connected_circuits(site)
 
+    # Then, get all the terminations of those circuits that isn't ourselves
+    remote_terminations = CircuitTermination.objects.filter(circuit__in=circuits).exclude(site=site)
 
-def are_devices_connected(device_a: Device, device_b: Device) -> bool:
-    """Determines whether devices are connected to each other by a direct connection"""
-    if NETBOX_VERSION < version.parse('3.3.0'):
-        queryset = Device.objects.filter(interfaces___link_peer_id__in=device_a.interfaces.all(), id=device_b.id)
-    else:
-        queryset = Device.objects.filter(
-            interfaces__cable__terminations__interface__in=device_a.interfaces.all(), id=device_b.id)
-    return bool(queryset.values('pk'))
+    # Return the sites of those terminations
+    return remote_terminations.values_list('site')

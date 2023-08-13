@@ -112,8 +112,8 @@ for (let key in markers) {
 const normalLineStyle = {weight: 3, color: '#3388ff'}
 const boldLineStyle ={weight: 5, color:'#0c10ff'};
 
-for (let connection of map_data.connections) {
-  let line = L.polyline(connection, normalLineStyle).addTo(geomap)
+for (let circuit of map_data.circuits) {
+  let line = L.polyline(circuit, normalLineStyle).addTo(geomap)
   line.on('mouseover', function () {this.setStyle(boldLineStyle); this.bringToFront()})
   line.on('mouseout', function () {this.setStyle(normalLineStyle)})
 }

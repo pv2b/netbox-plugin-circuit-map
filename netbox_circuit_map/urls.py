@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     path('', views.MapView.as_view(), name='map'),
-    path('connected-cpe/<int:pk>', views.ConnectedCpeAjaxView.as_view(), name='connected-cpe')
+    path('connected-circuit/<int:pk>', views.ConnectedCircuitAjaxView.as_view(), name='connected-circuit')
 ]
