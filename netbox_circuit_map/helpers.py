@@ -19,7 +19,7 @@ def get_site_location(site: Site) -> LatLon | None:
         return (float(site.latitude), float(site.longitude))
 
 def get_connected_circuits(site: Site) -> QuerySet[Circuit]:
-    return Circuit.objects.filter(Q(termination_a__site_id=site.id) | Q(termination_a__site_id=site.id))
+    return Circuit.objects.filter(Q(termination_z__site_id=site.id) | Q(termination_a__site_id=site.id))
 
 
 def get_connected_sites(site: Site) -> QuerySet[Site]:
@@ -29,7 +29,8 @@ def get_connected_sites(site: Site) -> QuerySet[Site]:
     circuits = get_connected_circuits(site)
 
     # Then, get all the terminations of those circuits that isn't ourselves
-    remote_terminations = CircuitTermination.objects.filter(circuit__in=circuits).exclude(site=site)
+    remote_terminations = CircuitTermination.objects.filter(circuit__in=circuits)
 
     # Return the sites of those terminations
-    return remote_terminations.values_list('site')
+    site_ids = remote_terminations.values_list('site')
+    return Site.objects.filter(Q(id__in = site_ids) | Q(id = site.id))

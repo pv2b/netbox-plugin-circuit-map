@@ -1,6 +1,7 @@
 import re
 
 from dcim.models import Site
+from circuits.models import Circuit
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import View
@@ -9,7 +10,7 @@ from django.db.models import Q
 
 from . import forms
 from .geographical_map import configure_leaflet_map
-from .helpers import get_site_location, get_connected_sites
+from .helpers import get_site_location, get_connected_sites, get_connected_circuits
 from .settings import plugin_settings
 
 
@@ -25,12 +26,24 @@ class MapView(PermissionRequiredMixin, View):
         """Circuit map view"""
         form = self.form(request.GET)
         if form.is_valid():
-            sites = Site.objects.all() #FIXME actually use the filter here
+            if sitename := form.cleaned_data['site']:
+                site = Site.objects.get(name=sitename)
+                sites = get_connected_sites(site)
+            else:
+                sites = Site.objects.all()
 
             geolocated_sites = {s: coords for s in sites if (coords := get_site_location(s))}
             non_geolocated_sites = set(sites) - set(geolocated_sites.keys())
 
-            map_data = configure_leaflet_map("geomap", geolocated_sites, form.cleaned_data['show_circuits'])
+            if form.cleaned_data['show_circuits']:
+                if sitename:
+                    circuits = get_connected_circuits(site)
+                else:
+                    circuits = Circuit.objects.all()
+            else:
+                circuits = []
+
+            map_data = configure_leaflet_map("geomap", geolocated_sites, circuits)
             return render(request, self.template_name, context=dict(
                 filter_form=form, map_data=map_data, non_geolocated_sites=non_geolocated_sites
             ))
