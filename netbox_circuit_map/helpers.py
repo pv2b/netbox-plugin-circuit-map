@@ -10,7 +10,6 @@ from itertools import chain
 from .settings import plugin_settings
 
 
-LOCATION_CF_NAME = plugin_settings['device_geolocation_cf']
 NETBOX_VERSION = version.parse(VERSION)
 LatLon = tuple[float, float]
 
