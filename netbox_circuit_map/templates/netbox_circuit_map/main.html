@@ -47,10 +47,10 @@
                                role="button" aria-expanded="false" aria-controls="collapseExample">
                                 <span class="text-collapsed">Show</span>
                                 <span class="text-expanded">Hide</span>
-                                sites are not geolocated ({{ non_geolocated_sites|length }})
+                                sites that are not geolocated ({{ non_geolocated_sites|length }})
                             </a>
                         </p>
-                        <div class="collapse" id="notShownDevices">
+                        <div class="collapse" id="notShownSites">
                             <div class="card card-body">
                                 <ul>
                                     {% for device in non_geolocated_sites %}
