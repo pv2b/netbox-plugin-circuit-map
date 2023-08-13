@@ -75,30 +75,6 @@ for (let key in markers) {
         document.querySelector('.sidebar-site-tenant').innerText = site.tenant
         document.querySelector('.sidebar-site-address').innerText = site.address
         sidebar.show()
-        fetch(`connected-circuit/${site.id}`)
-          .then(response => response.json()).then(
-          function (response) {
-            if (response.status === true) {
-              let circuit_list = document.querySelector('.sidebar-cirucit-list')
-              circuit_list.innerHTML = ""
-              if (response.circuits?.length) {
-                circuit_list.innerHTML = `<div class="mb-2">Connected circuits to the selected site:</div>`
-                let ul = document.createElement('ul')
-                ul.setAttribute('class', 'mb-0')
-                circuit_list.appendChild(ul)
-                for (let circuit of response.circuits) {
-                  let li = document.createElement('li');
-                  li.innerHTML = `<a href="${circuit.url}" target="_blank">${circuit.name}</a>
-                                    <span class="separator">·</span>
-                                    <span class="text-muted">${circuit.provider}</span>`
-                  ul.appendChild(li)
-                }
-              } else {
-                circuit_list.innerHTML = "<i>There are no connected circuits to the selected site</i>"
-              }
-            }
-          }
-        )
       }
     })
     bounds.extend(marker_data.position)
