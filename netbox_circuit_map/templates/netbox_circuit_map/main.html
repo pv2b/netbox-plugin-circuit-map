@@ -38,48 +38,50 @@
         </li>
     </ul>
     <div class="tab-content flex-grow-1" style="min-height:400px">
-        <div class="tab-pane active flex-grow-1 d-flex flex-column" id="map" role="tabpanel" aria-labelledby="map-tab">
-            {% if map_data %}
-                <div class="mb-3">
-                    {% if non_geolocated_sites %}
-                        <p>
-                            <a class="btn btn-sm btn-outline-secondary text-toggle" data-bs-toggle="collapse"
-                               href="#notShownSites"
-                               role="button" aria-expanded="false" aria-controls="collapseExample">
-                                <span class="text-collapsed">Show</span>
-                                <span class="text-expanded">Hide</span>
-                                sites that are not geolocated ({{ non_geolocated_sites|length }})
-                            </a>
-                        </p>
-                        <div class="collapse" id="notShownSites">
-                            <div class="card card-body">
-                                <ul>
-                                    {% for device in non_geolocated_sites %}
-                                        <li>
-                                            <a href="{{ device.get_absolute_url }}"
-                                               target="_blank">{{ device.name }}</a>
-                                            <span class="separator">·</span>
-                                            <span class="text-muted">{{ site.tenant.name }}</span>
-                                            <span class="separator">·</span>
-                                            <span class="text-muted">{{ site.physical_address }}</span>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
+        <div class="tab-pane active h-100" id="map" role="tabpanel" aria-labelledby="map-tab">
+            <div class="d-flex flex-column h-100">
+                {% if map_data %}
+                    <div class="mb-3">
+                        {% if non_geolocated_sites %}
+                            <p>
+                                <a class="btn btn-sm btn-outline-secondary text-toggle" data-bs-toggle="collapse"
+                                href="#notShownSites"
+                                role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    <span class="text-collapsed">Show</span>
+                                    <span class="text-expanded">Hide</span>
+                                    sites that are not geolocated ({{ non_geolocated_sites|length }})
+                                </a>
+                            </p>
+                            <div class="collapse" id="notShownSites">
+                                <div class="card card-body">
+                                    <ul>
+                                        {% for device in non_geolocated_sites %}
+                                            <li>
+                                                <a href="{{ device.get_absolute_url }}"
+                                                target="_blank">{{ device.name }}</a>
+                                                <span class="separator">·</span>
+                                                <span class="text-muted">{{ site.tenant.name }}</span>
+                                                <span class="separator">·</span>
+                                                <span class="text-muted">{{ site.physical_address }}</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                    {% endif %}
-                </div>
-                <div id="{{ map_data.map_id }}" class="flex-grow-1"></div>
-                <div id="map-sidebar">
-                    <div class="h3 sidebar-site-name"></div>
-                    <div class="h6 sidebar-site-tenant"></div>
-                    <div class="h5 sidebar-site-address"></div>
-                </div>
-                {{ map_data|json_script:"map-data" }}
-                <script src="{% static 'netbox_circuit_map/js/map.js' %}"></script>
-            {% else %}
-                Please specify filtering criteria for displaying the map
-            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div id="{{ map_data.map_id }}" class="flex-grow-1"></div>
+                    <div id="map-sidebar">
+                        <div class="h3 sidebar-site-name"></div>
+                        <div class="h6 sidebar-site-tenant"></div>
+                        <div class="h5 sidebar-site-address"></div>
+                    </div>
+                    {{ map_data|json_script:"map-data" }}
+                    <script src="{% static 'netbox_circuit_map/js/map.js' %}"></script>
+                {% else %}
+                    Please specify filtering criteria for displaying the map
+                {% endif %}
+            </div>
         </div>
         <div class="tab-pane" id="filters-form" role="tabpanel" aria-labelledby="filters-form-tab">
             {% include 'inc/filter_list.html' %}
