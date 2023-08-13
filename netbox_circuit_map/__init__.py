@@ -9,8 +9,6 @@ class CircuitMapConfig(PluginConfig):
     author_email = 'pvz@pvz.pp.se'
     base_url = 'circuit-map'
     default_settings = {
-        'device_geolocation_cf': 'geolocation',
-        'cpe_device_role': 'CPE',
         'geomap_settings': {
             'attribution': 'Data by &copy; <a href="https://openstreetmap.org">OpenStreetMap</a>',
             'crs': 'EPSG3857',
