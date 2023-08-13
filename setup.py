@@ -1,22 +1,22 @@
 from setuptools import setup, find_packages
 
-version = '0.1.3'
+version = '0.0.1'
 
 with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='netbox-plugin-device-map',
+    name='netbox-plugin-circuit-map',
     version=version,
-    description='A simple device map with filter criteria',
+    description='A simple circuit map with filter criteria',
     long_description=long_description,
     long_description_content_type='text/markdown',
     license='MIT',
-    author='Victor Golovanenko',
-    author_email='drygdryg2014@yandex.com',
-    url='https://github.com/drygdryg/netbox-plugin-device-map',
-    download_url='https://github.com/drygdryg/netbox-plugin-device-map/archive/v{}.zip'.format(version),
-    python_requires='>3.9',
+    author='Per von Zweigbergk',
+    author_email='pvz@pvz.pp.se',
+    url='https://github.com/pv2b/netbox-plugin-circuit-map',
+    download_url='https://github.com/drygdryg/netbox-plugin-circuit-map/archive/v{}.zip'.format(version),
+    python_requires='>3.10',
     classifiers=[
         'Environment :: Plugins',
         'Environment :: Web Environment',

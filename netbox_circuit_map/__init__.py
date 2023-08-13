@@ -1,12 +1,12 @@
 from extras.plugins import PluginConfig
 
 
-class DeviceMapConfig(PluginConfig):
-    name = 'netbox_device_map'
-    verbose_name = 'Device map'
-    version = '0.1.3'
-    author = 'Victor Golovanenko'
-    author_email = 'drygdryg2014@yandex.com'
+class CircuitMapConfig(PluginConfig):
+    name = 'netbox_circuit_map'
+    verbose_name = 'Circuit map'
+    version = '0.0.1'
+    author = 'Per von Zweigbergk'
+    author_email = 'pvz@pvz.pp.se'
     base_url = 'device-map'
     default_settings = {
         'device_geolocation_cf': 'geolocation',
@@ -24,4 +24,4 @@ class DeviceMapConfig(PluginConfig):
     }
 
 
-config = DeviceMapConfig
+config = CircuitMapConfig
