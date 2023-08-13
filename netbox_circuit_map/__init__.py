@@ -7,7 +7,7 @@ class CircuitMapConfig(PluginConfig):
     version = '0.0.1'
     author = 'Per von Zweigbergk'
     author_email = 'pvz@pvz.pp.se'
-    base_url = 'device-map'
+    base_url = 'circuit-map'
     default_settings = {
         'device_geolocation_cf': 'geolocation',
         'cpe_device_role': 'CPE',
