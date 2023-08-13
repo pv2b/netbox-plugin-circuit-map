@@ -15,7 +15,7 @@ setup(
     author='Per von Zweigbergk',
     author_email='pvz@pvz.pp.se',
     url='https://github.com/pv2b/netbox-plugin-circuit-map',
-    download_url='https://github.com/drygdryg/netbox-plugin-circuit-map/archive/v{}.zip'.format(version),
+    download_url='https://github.com/pv2b/netbox-plugin-circuit-map/archive/v{}.zip'.format(version),
     python_requires='>3.10',
     classifiers=[
         'Environment :: Plugins',

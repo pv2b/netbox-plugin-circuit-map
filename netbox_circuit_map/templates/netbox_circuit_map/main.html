@@ -55,10 +55,10 @@
                             <div class="collapse" id="notShownSites">
                                 <div class="card card-body">
                                     <ul>
-                                        {% for device in non_geolocated_sites %}
+                                        {% for site in non_geolocated_sites %}
                                             <li>
-                                                <a href="{{ device.get_absolute_url }}"
-                                                target="_blank">{{ device.name }}</a>
+                                                <a href="{{ site.get_absolute_url }}"
+                                                target="_blank">{{ site.name }}</a>
                                                 <span class="separator">·</span>
                                                 <span class="text-muted">{{ site.tenant.name }}</span>
                                                 <span class="separator">·</span>

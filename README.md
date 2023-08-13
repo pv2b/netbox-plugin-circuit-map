@@ -48,7 +48,7 @@ sudo systemctl restart netbox
 ```
 
 ## Configuration
-You can customize plugin behavior according to your needs. For example, change the custom field that contains device coordinates or install custom map tiles.
+You can customize plugin behavior according to your needs. For example, install custom map tiles.
 Update PLUGINS_CONFIG parameter in the `configuration.py` like this:
 ```python
 PLUGINS_CONFIG = {
