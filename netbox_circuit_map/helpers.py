@@ -16,7 +16,8 @@ LatLon = tuple[float, float]
 
 
 def get_site_location(site: Site) -> LatLon | None:
-    return (float(site.latitude), float(site.longitude))
+    if site.latitude and site.longitude:
+        return (float(site.latitude), float(site.longitude))
 
 def get_connected_circuits(site: Site) -> QuerySet[Circuit]:
     return Circuit.objects.filter(Q(termination_a__site_id=site.id) | Q(termination_a__site_id=site.id))
