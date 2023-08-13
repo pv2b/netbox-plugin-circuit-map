@@ -45,7 +45,8 @@ def configure_leaflet_map(map_id: str, sites: dict[Site, LatLon], circuits: list
             "site_a": circuit.termination_a.site.id,
             "site_z": circuit.termination_z.site.id,
             "provider": circuit.provider.name,
-            "id": circuit.cid
+            "cid": circuit.cid,
+            "id": circuit.id
         })
 
     return map_config

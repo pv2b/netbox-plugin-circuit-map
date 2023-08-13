@@ -128,7 +128,10 @@ for (let circuit of map_data.circuits) {
       line.setStyle(normalLineStyle);
     }
   })
-  line.bindTooltip(`${circuit.id}<br><span class="text-muted">${circuit.provider}</span>`, {sticky:true})
+  line.on('click', () => {
+    document.location = `/circuits/circuits/${circuit.id}`
+  })
+  line.bindTooltip(`${circuit.cid}<br><span class="text-muted">${circuit.provider}</span>`, {sticky:true})
   lines_by_site[site_a].push(line)
   lines_by_site[site_z].push(line)
 }
