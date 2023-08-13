@@ -89,9 +89,10 @@ const normalLineStyle = {weight: 3, color: '#3388ff'}
 const boldLineStyle ={weight: 5, color:'#0c10ff'};
 
 for (let circuit of map_data.circuits) {
-  let line = L.polyline(circuit, normalLineStyle).addTo(geomap)
+  let line = L.polyline(circuit.coords, normalLineStyle).addTo(geomap)
   line.on('mouseover', function () {this.setStyle(boldLineStyle); this.bringToFront()})
   line.on('mouseout', function () {this.setStyle(normalLineStyle)})
+  line.bindTooltip(`${circuit.id}<br><span class="text-muted">${circuit.provider}</span>`)
 }
 
 if (bounds.isValid()) {

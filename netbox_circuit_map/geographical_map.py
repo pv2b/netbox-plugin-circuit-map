@@ -17,7 +17,7 @@ def configure_leaflet_map(map_id: str, sites: dict[Site, LatLon], circuits: list
     site_id_to_latlon = {site.id: position for site, position in sites.items()}
     map_config = dict(**geomap_settings, map_id=map_id)
     markers: list[dict] = []
-    circuits2: set[frozenset[LatLon, LatLon]] = set()
+    circuits2 = []
     for site, position in sites.items():
         if site.tenant:
             tenant = site.tenant.name
@@ -47,8 +47,12 @@ def configure_leaflet_map(map_id: str, sites: dict[Site, LatLon], circuits: list
 
                 a_latlon = site_id_to_latlon[a_id]
                 z_latlon = site_id_to_latlon[z_id]
-                circuits2.add(frozenset((a_latlon, z_latlon)))
+                circuits2.append({
+                    "coords": (a_latlon, z_latlon),
+                    "provider": circuit.provider.name,
+                    "id": circuit.cid
+                })
 
-    map_config.update(markers=markers, circuits=[tuple(c) for c in circuits2])
+    map_config.update(markers=markers, circuits=circuits2)
 
     return map_config
