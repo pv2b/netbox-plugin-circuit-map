@@ -1,7 +1,7 @@
 {% extends 'base/layout.html' %}
 {% load static %}
 
-{% block title %}Device map{% endblock %}
+{% block title %}Circuit map{% endblock %}
 
 {% block head %}
     {# Leaflet #}
@@ -40,25 +40,27 @@
         <div class="tab-pane active" id="map" role="tabpanel" aria-labelledby="map-tab">
             {% if map_data %}
                 <div class="mb-3">
-                    {% if non_geolocated_devices %}
+                    {% if non_geolocated_sites %}
                         <p>
                             <a class="btn btn-sm btn-outline-secondary text-toggle" data-bs-toggle="collapse"
-                               href="#notShownDevices"
+                               href="#notShownSites"
                                role="button" aria-expanded="false" aria-controls="collapseExample">
                                 <span class="text-collapsed">Show</span>
                                 <span class="text-expanded">Hide</span>
-                                devices are not geolocated ({{ non_geolocated_devices|length }})
+                                sites are not geolocated ({{ non_geolocated_sites|length }})
                             </a>
                         </p>
                         <div class="collapse" id="notShownDevices">
                             <div class="card card-body">
                                 <ul>
-                                    {% for device in non_geolocated_devices %}
+                                    {% for device in non_geolocated_sites %}
                                         <li>
                                             <a href="{{ device.get_absolute_url }}"
                                                target="_blank">{{ device.name }}</a>
                                             <span class="separator">·</span>
-                                            <span class="text-muted">{{ device.device_role.name }}</span>
+                                            <span class="text-muted">{{ site.tenant.name }}</span>
+                                            <span class="separator">·</span>
+                                            <span class="text-muted">{{ site.physical_address }}</span>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -68,10 +70,10 @@
                 </div>
                 <div id="{{ map_data.map_id }}" style="height: 700px"></div>
                 <div id="map-sidebar">
-                    <div class="h3 sidebar-device-name"></div>
-                    <div class="h6 sidebar-device-type"></div>
-                    <div class="h5 sidebar-device-role"></div>
-                    <div class="sidebar-cpe-list"></div>
+                    <div class="h3 sidebar-site-name"></div>
+                    <div class="h6 sidebar-site-tenant"></div>
+                    <div class="h5 sidebar-site-address"></div>
+                    <div class="sidebar-circuit-list"></div>
                 </div>
                 {{ map_data|json_script:"map-data" }}
                 <script src="{% static 'netbox_device_map/js/map.js' %}"></script>

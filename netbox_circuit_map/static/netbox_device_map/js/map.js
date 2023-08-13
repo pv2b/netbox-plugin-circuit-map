@@ -6,13 +6,19 @@ let default_marker_icon = {
   shadowLength: 0.64,
   shadowBlur: 1.5
 }
+// TODO Maybe make different colours depending on site group?
+// Also, maybe an idea to make this configurable instead of hardcoded?
+// Maybe on a custom field on the site and/or circuit or circuit type or provider
+// For now just leaving the original data commented as as a syntax hint
 let marker_icon_configs = {
+/*
   'access-switch': Object.assign({color: "#2da652"}, default_marker_icon),
   'core-switch': Object.assign({color: "#d30b0b"}, default_marker_icon),
   'distribution-switch': Object.assign({color: "#277fca"}, default_marker_icon),
   olt: Object.assign({color: "#c5ba26"}, default_marker_icon),
   router: Object.assign({color: "#26A69A"}, default_marker_icon),
   wifi: Object.assign({color: "#8111ea"}, default_marker_icon)
+*/
 }
 
 const map_data = JSON.parse(document.getElementById('map-data').textContent)
@@ -56,39 +62,39 @@ for (let key in markers) {
     } else {
       iconOptions = default_marker_icon
     }
-    let markerObj = L.marker(marker_data.position, {icon: L.divIcon.svgIcon(iconOptions), device: marker_data.device})
-      .bindTooltip(`${marker_data.device.name}<br><span class="text-muted">${marker_data.device.role}</span>`)
+    let markerObj = L.marker(marker_data.position, {icon: L.divIcon.svgIcon(iconOptions), site: marker_data.site})
+      .bindTooltip(`${marker_data.site.name}<br><span class="text-muted">${marker_data.site.role}</span>`)
     markerObj.on('click', function (event) {
-      let device = event.target.options.device
-      if (sidebar.isVisible() && (sidebar.displayed_device === device.id)) {
-        sidebar.displayed_device = undefined
+      let site = event.target.options.site
+      if (sidebar.isVisible() && (sidebar.displayed_site === site.id)) {
+        sidebar.displayed_site = undefined
         sidebar.hide()
       } else {
-        sidebar.displayed_device = device.id
-        document.querySelector('.sidebar-device-name').innerHTML = `<a href="${device.url}" target="_blank">${device.name}</a>`
-        document.querySelector('.sidebar-device-role').innerHTML = device.role
+        sidebar.displayed_site = site.id
+        document.querySelector('.sidebar-site-name').innerHTML = `<a href="${site.url}" target="_blank">${site.name}</a>`
+        document.querySelector('.sidebar-site-tenant').innerHTML = site.tenant
+        document.querySelector('.sidebar-site-address').innerHTML = site.address
         sidebar.show()
-        fetch(`connected-cpe/${device.id}?vlan=${map_data.vlan}`)
+        fetch(`connected-circuit/${site.id}`)
           .then(response => response.json()).then(
           function (response) {
             if (response.status === true) {
-              document.querySelector('.sidebar-device-type').innerHTML = response.device_type
-              let cpe_list = document.querySelector('.sidebar-cpe-list')
-              cpe_list.innerHTML = ""
-              if (response.cpe_devices?.length) {
-                cpe_list.innerHTML = `<div class="mb-2">Connected CPEs in the selected VLAN:</div>`
+              let circuit_list = document.querySelector('.sidebar-cirucit-list')
+              circuit_list.innerHTML = ""
+              if (response.circuits?.length) {
+                circuit_list.innerHTML = `<div class="mb-2">Connected circuits to the selected site:</div>`
                 let ul = document.createElement('ul')
                 ul.setAttribute('class', 'mb-0')
-                cpe_list.appendChild(ul)
-                for (let cpe_device of response.cpe_devices) {
+                circuit_list.appendChild(ul)
+                for (let circuit of response.circuits) {
                   let li = document.createElement('li');
-                  li.innerHTML = `<a href="${cpe_device.url}" target="_blank">${cpe_device.name}</a>
+                  li.innerHTML = `<a href="${circuit.url}" target="_blank">${circuit.name}</a>
                                     <span class="separator">·</span>
-                                    <span class="text-muted">${cpe_device.comments}</span>`
+                                    <span class="text-muted">${circuit.provider}</span>`
                   ul.appendChild(li)
                 }
               } else {
-                cpe_list.innerHTML = "<i>There are no connected CPEs in the selected VLAN</i>"
+                circuit_list.innerHTML = "<i>There are no connected circuits to the selected site</i>"
               }
             }
           }

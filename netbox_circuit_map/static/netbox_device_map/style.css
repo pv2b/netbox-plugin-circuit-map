@@ -5,11 +5,11 @@
   display: none;
 }
 
-.sidebar-device-type {
+.sidebar-site-tenant {
   color: #6c757d;
 }
 
-.sidebar-device-role {
+.sidebar-site-address {
   font-size: .9rem;
   color: #6c757d;
 }
@@ -18,6 +18,6 @@
   text-decoration: none
 }
 
-.sidebar-cpe-list li {
+.sidebar-circuit-list li {
   list-style-type: decimal;
 }
