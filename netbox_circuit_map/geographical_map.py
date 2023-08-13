@@ -5,7 +5,6 @@ from .helpers import get_connected_sites, LatLon
 
 
 geomap_settings = plugin_settings['geomap_settings']
-CPE_DEVICE_ROLE_NAME = plugin_settings['cpe_device_role']
 
 
 def configure_leaflet_map(map_id: str, sites: dict[Site, LatLon], show_circuits=True) -> dict:
@@ -29,6 +28,7 @@ def configure_leaflet_map(map_id: str, sites: dict[Site, LatLon], show_circuits=
             site=dict(
                 id=site.id,
                 name=site.name,
+                address=site.physical_address,
                 url=site.get_absolute_url(),
                 tenant=tenant
             )
