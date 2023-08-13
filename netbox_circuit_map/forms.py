@@ -6,17 +6,17 @@ from utilities.forms import BootstrapMixin
 from utilities.forms.fields import DynamicModelChoiceField, DynamicModelMultipleChoiceField
 
 
-class CircuitMapFilterForm(BootstrapMixin, forms.Form):
+#class CircuitMapFilterForm(BootstrapMixin, forms.Form):
+class CircuitMapFilterForm(forms.Form):
     site = DynamicModelChoiceField(
         queryset=Site.objects.all(),
         required=False,
         label="Site",
         help_text="Site for circuit selection"
     )
-    show_circuits = forms.BooleanField(
+    hide_circuits = forms.BooleanField(
         required=False,
-        label="Show circuits between sites",
-        initial=True
+        label="Hide circuits between sites"
     )
 
 class ConnectedCircuitsForm(forms.Form):

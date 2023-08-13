@@ -25,6 +25,7 @@ class MapView(PermissionRequiredMixin, View):
     def get(self, request):
         """Circuit map view"""
         form = self.form(request.GET)
+        print(repr(request.GET))
         if form.is_valid():
             if sitename := form.cleaned_data['site']:
                 site = Site.objects.get(name=sitename)
@@ -35,13 +36,12 @@ class MapView(PermissionRequiredMixin, View):
             geolocated_sites = {s: coords for s in sites if (coords := get_site_location(s))}
             non_geolocated_sites = set(sites) - set(geolocated_sites.keys())
 
-            if form.cleaned_data['show_circuits']:
-                if sitename:
-                    circuits = get_connected_circuits(site)
-                else:
-                    circuits = Circuit.objects.all()
-            else:
+            if form.cleaned_data['hide_circuits']:
                 circuits = []
+            elif sitename:
+                circuits = get_connected_circuits(site)
+            else:
+                circuits = Circuit.objects.all()
 
             map_data = configure_leaflet_map("geomap", geolocated_sites, circuits)
             return render(request, self.template_name, context=dict(

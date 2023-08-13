@@ -12,7 +12,7 @@ def configure_leaflet_map(map_id: str, sites: dict[Site, LatLon], circuits: list
     """Generate Leaflet map of sites and the circuits between them.
     :param map_id: initialize the map on the div with this id
     :param sites: list of target sites to display on the map
-    :param show_circuits: calculate circuits between sites
+    :param hide_circuits: hide circuits between sites
     """
     site_id_to_latlon = {site.id: position for site, position in sites.items()}
     map_config = dict(**geomap_settings, map_id=map_id)
