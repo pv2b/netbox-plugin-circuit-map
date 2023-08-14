@@ -91,3 +91,4 @@ Custom tiles layer settings:
 - [leaflet.fullscreen](https://github.com/brunob/leaflet.fullscreen)
 - [Leaflet-SVGIcon](https://github.com/iatkin/leaflet-svgicon)
 - [leaflet-sidebar](https://github.com/Turbo87/leaflet-sidebar)
+- [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster)
